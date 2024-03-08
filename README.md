@@ -2,6 +2,10 @@
 
 A new Flutter project.
 
+## DEV
+1. Copy the .env.template and rename to .env
+2. Change values in .env
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
