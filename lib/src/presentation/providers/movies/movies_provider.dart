@@ -3,9 +3,37 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:movies_app/src/domain/entities/movie.dart';
 import 'package:movies_app/src/presentation/providers/movies/movies_repository_provider.dart';
 
-final nowPlayingMovies = StateNotifierProvider<MoviesNotifier, MoviesState>(
+final nowPlayingMoviesProvider =
+    StateNotifierProvider<MoviesNotifier, MoviesState>(
   (ref) {
     final fetchMoreMovies = ref.watch(moviesRepositoryProvider).getNowPlaying;
+
+    return MoviesNotifier(fetchMoreMovies: fetchMoreMovies);
+  },
+);
+
+final popularMoviesProvider =
+    StateNotifierProvider<MoviesNotifier, MoviesState>(
+  (ref) {
+    final fetchMoreMovies = ref.watch(moviesRepositoryProvider).getPopular;
+
+    return MoviesNotifier(fetchMoreMovies: fetchMoreMovies);
+  },
+);
+
+final topRatedMoviesProvider =
+    StateNotifierProvider<MoviesNotifier, MoviesState>(
+  (ref) {
+    final fetchMoreMovies = ref.watch(moviesRepositoryProvider).getTopRated;
+
+    return MoviesNotifier(fetchMoreMovies: fetchMoreMovies);
+  },
+);
+
+final upcomingMoviesProvider =
+    StateNotifierProvider<MoviesNotifier, MoviesState>(
+  (ref) {
+    final fetchMoreMovies = ref.watch(moviesRepositoryProvider).getUpcoming;
 
     return MoviesNotifier(fetchMoreMovies: fetchMoreMovies);
   },
@@ -20,18 +48,18 @@ class MoviesNotifier extends StateNotifier<MoviesState> {
   MoviesNotifier({
     required this.fetchMoreMovies,
   }) : super(MoviesState(movies: [])) {
-    print('super MoviesNotifier');
     loadNextPage();
   }
 
   Future loadNextPage() async {
+    if (state.isLoading) return;
+
     currentPage++;
     state = state.copyWith(isLoading: true);
     List<Movie> movies = await fetchMoreMovies(page: currentPage);
-    state = state.copyWith(
-      movies: [...state.movies, ...movies],
-      isLoading: false,
-    );
+    state = state.copyWith(movies: [...state.movies, ...movies]);
+    await Future.delayed(const Duration(milliseconds: 300));
+    state = state.copyWith(isLoading: false);
   }
 }
 
@@ -41,7 +69,7 @@ class MoviesState {
 
   MoviesState({
     required this.movies,
-    this.isLoading = true,
+    this.isLoading = false,
   });
 
   MoviesState copyWith({
