@@ -82,7 +82,7 @@ class _SliverAppBarView extends StatelessWidget {
                 movie.posterPath,
                 fit: BoxFit.cover,
                 loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress != null) return SizedBox();
+                  if (loadingProgress != null) return const SizedBox();
                   return FadeIn(child: child);
                 },
               ),
@@ -166,7 +166,6 @@ class _SliverListView extends StatelessWidget {
                   ],
                 ),
               ),
-
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Wrap(
@@ -185,9 +184,7 @@ class _SliverListView extends StatelessWidget {
                   ],
                 ),
               ),
-              // TODO: mostrar actores
               _ActorsByMovieView(movieId: '${movie.id}'),
-
               const SizedBox(height: 50),
             ],
           );
