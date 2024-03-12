@@ -106,7 +106,7 @@ class _SlideView extends StatelessWidget {
                     return const Center(child: CircularProgressIndicator());
                   }
                   return GestureDetector(
-                    onTap: () => context.push('/movie/${movie.id}'),
+                    onTap: () => context.push('/home/0/movie/${movie.id}'),
                     child: FadeIn(child: child),
                   );
                 },
