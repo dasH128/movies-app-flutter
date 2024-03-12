@@ -4,7 +4,7 @@ import 'package:movies_app/src/presentation/screens/screens.dart';
 class AppRouter {
   getRouter() {
     return GoRouter(
-      initialLocation: '/home/0',
+      initialLocation: '/home/2',
       routes: [
         GoRoute(path: '/', redirect: (_, __) => '/home/0'),
         GoRoute(

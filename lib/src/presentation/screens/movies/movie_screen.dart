@@ -50,7 +50,13 @@ class _MovieScreenState extends ConsumerState<MovieScreen> {
   }
 }
 
-class _SliverAppBarView extends StatelessWidget {
+final isFavoriteProvider =
+    FutureProvider.family.autoDispose((ref, int movieId) {
+  final provider = ref.watch(localStorageRepositoryProvider);
+  return provider.isMovieFavorite(movieId);
+});
+
+class _SliverAppBarView extends ConsumerWidget {
   final Movie movie;
 
   const _SliverAppBarView({
@@ -58,13 +64,47 @@ class _SliverAppBarView extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     var size = MediaQuery.of(context).size;
+    var isFavoriteFuture = ref.watch(isFavoriteProvider(movie.id));
     return SliverAppBar(
       backgroundColor: Colors.black,
       expandedHeight: size.height * 0.7,
       foregroundColor: Colors.white,
       floating: true,
+      actions: [
+        IconButton(
+          onPressed: () async {
+            // await ref
+            //     .read(localStorageRepositoryProvider)
+            //     .toggleFavorite(movie);
+            await ref
+                .read(favoriteMoviesProvider.notifier)
+                .toggleFavorite(movie);
+
+            ref.invalidate(isFavoriteProvider(movie.id));
+            //ref.invalidate(favoriteMoviesProvider);
+          },
+          icon: isFavoriteFuture.when(
+            loading: () => const CircularProgressIndicator(),
+            data: (isFavorite) => isFavorite
+                ? Icon(Icons.favorite, color: Colors.red)
+                : Icon(Icons.favorite_border),
+            error: (_, __) => throw UnimplementedError(),
+          ),
+          // icon: FutureBuilder<bool>(
+          //   initialData: false,
+          //   future: ref
+          //       .read(localStorageRepositoryProvider)
+          //       .isMovieFavorite(movie.id),
+          //   builder: (_, snap) {
+          //     if (snap.data == true)
+          //       return Icon(Icons.favorite, color: Colors.red);
+          //     return Icon(Icons.favorite_border);
+          //   },
+          // ),
+        ),
+      ],
       flexibleSpace: FlexibleSpaceBar(
         titlePadding: const EdgeInsetsDirectional.symmetric(
           horizontal: 12,
