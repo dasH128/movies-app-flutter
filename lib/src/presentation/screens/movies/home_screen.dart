@@ -10,8 +10,8 @@ class HomeScreen extends StatelessWidget {
 
   final viewsRoutes = const [
     HomeView(),
-    SizedBox(),
     FavoriteView(),
+    ConfigurationView(),
   ];
   @override
   Widget build(BuildContext context) {

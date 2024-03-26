@@ -23,12 +23,12 @@ class CustomBottomNavigationBarWidget extends StatelessWidget {
           label: 'inicio',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.label_outline),
-          label: 'categorias',
-        ),
-        BottomNavigationBarItem(
           icon: Icon(Icons.favorite),
           label: 'favorites',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.settings),
+          label: 'configuración',
         ),
       ],
     );
