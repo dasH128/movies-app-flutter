@@ -11,12 +11,14 @@ class AppTheme {
   });
 
   getTheme() {
-    return ThemeData(
+    final base = ThemeData(
       useMaterial3: true,
-      // colorSchemeSeed: Colors.amber,
-      textTheme: GoogleFonts.nunitoTextTheme(),
       brightness: (isDarkMode) ? Brightness.dark : Brightness.light,
       colorSchemeSeed: colorTheme,
+    );
+
+    return base.copyWith(
+      textTheme: GoogleFonts.nunitoTextTheme(base.textTheme),
     );
   }
 }
